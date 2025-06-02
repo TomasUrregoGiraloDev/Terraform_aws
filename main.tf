@@ -1,6 +1,5 @@
-
 variable "region" {
-  description = "Región de AWS"
+  description = "AWS Region"
   default     = "us-east-1"
 }
 
@@ -12,7 +11,7 @@ provider "aws" {
 
 resource "aws_security_group" "ssh_http_sg" {
   name        = "ssh-http-sg"
-  description = "Permitir tráfico SSH y HTTP"
+  description = "Allow SSH and HTTP traffic"
 
   ingress {
     description = "SSH"
@@ -31,7 +30,7 @@ resource "aws_security_group" "ssh_http_sg" {
   }
 
   egress {
-    description = "Todo el tráfico de salida"
+    description = "All outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -39,23 +38,23 @@ resource "aws_security_group" "ssh_http_sg" {
   }
 
   tags = {
-    Name = "GrupoSeguridadSSH_HTTP"
+    Name = "SSH_HTTP_SecurityGroup"
   }
 }
 
 
-resource "aws_instance" "mi_instancia" {
+resource "aws_instance" "my_instance" {
   ami           = "ami-0c55b159cbfafe1f0" 
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.ssh_http_sg.id]
 
   tags = {
-    Name = "InstanciaConSeguridad"
+    Name = "InstanceWithSecurity"
   }
 }
 
 
-output "ip_publica" {
-  value = aws_instance.mi_instancia.public_ip
+output "public_ip" {
+  value = aws_instance.my_instance.public_ip
 }
