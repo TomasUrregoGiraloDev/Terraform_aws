@@ -1,15 +1,15 @@
-# Variable para la región
+
 variable "region" {
   description = "Región de AWS"
   default     = "us-east-1"
 }
 
-# Proveedor AWS
+
 provider "aws" {
   region = var.region
 }
 
-# Grupo de seguridad para SSH y HTTP
+
 resource "aws_security_group" "ssh_http_sg" {
   name        = "ssh-http-sg"
   description = "Permitir tráfico SSH y HTTP"
@@ -43,9 +43,9 @@ resource "aws_security_group" "ssh_http_sg" {
   }
 }
 
-# Instancia EC2
+
 resource "aws_instance" "mi_instancia" {
-  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 en us-east-1
+  ami           = "ami-0c55b159cbfafe1f0" 
   instance_type = "t2.micro"
 
   vpc_security_group_ids = [aws_security_group.ssh_http_sg.id]
@@ -55,7 +55,7 @@ resource "aws_instance" "mi_instancia" {
   }
 }
 
-# Mostrar la IP pública
+
 output "ip_publica" {
   value = aws_instance.mi_instancia.public_ip
 }
